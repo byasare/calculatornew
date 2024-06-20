@@ -1,0 +1,83 @@
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    background-color:#2E2E2E;
+    margin:0;
+    font-family:Arial, sans-serif;
+}
+.calculator{
+    background-color:#333;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 20px rgba(0,0,0,0.1);
+}
+.display-wrapper{
+    position:relative;
+}
+.display{
+    background-color:#222;
+    color:#fff;
+    font-size:2em;
+    padding:10px;
+    text-align:right;
+    border-radius:5px;
+    margin-bottom:10px;
+    width:calc(100% - 20px);
+    border:none;
+    box-shadow:inset 2px 2px 5px rgba(0,0,0,0.3);
+}
+.blinking-cursor{
+    display:inline-block;
+    width:2px;
+    background-color:#fff; 
+    animation:blink 1s step-start infinite;
+    position:absolute;
+    right:10px;
+    top:50%;
+    transform:translateY(-50%);
+}
+@keyframes blink{
+    0% {opacity:1;}
+    50% {opacity:0;}
+    100% {opacity:1;}
+}
+.buttons{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:10px;
+}
+button{
+    padding:20px;
+    font-size:1.4em;
+    border:none;
+    border-radius:5px;
+    background-color:#fff;
+    cursor:pointer;
+    transition:background-color 0.3s, box-shadow 0.3s;
+    font-family:'Arial Black', Gadget, sans-serif;
+    box-shadow:2px 2px 5px rgba(0,0,0,0.3);
+}
+button:hover{
+    background-color:#e0e0e0;
+}
+#enterButton{
+    grid-column:span 4;
+    background-color:#4caf50;
+    color:white;
+}
+#zeroButton{
+    grid-column:span 2;
+}
+#enterButton:hover{
+    background-color:#45a049;
+}
+#enterButton:active{
+    animation:clickAnimation 0.2s;
+}
+@keyframes clickAnimation{
+    0% {transform:scale(1);}
+    50% {transform:scale(0.9);}
+    100% {transform:scale(1);}
+}
