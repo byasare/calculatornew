@@ -1,6 +1,6 @@
 let display=document.getElementById('display'); 
 let clearButton=document.getElementById('clearButton')
-let blinkingCursor=document.getElementById('blinkingCursor')
+let blinkingCursor=document.getElementById('blinking-cursor')
 document.addEventListener('keydown',handleKeyPress);
 
 function clearDisplay(){
