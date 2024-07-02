@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="eng">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Login & Signup Page</title>
+    <style>
+        body {
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+            margin:0;
+            background-color: #333;
+            color: #fff;
+            font-family: Arial, sans-serif;}
+        .container {
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            background:#fff;
+            padding:20px;
+            border-radius:10px;
+            box-shadow:0 0 10px rgba(0,0,0,0.1);
+            width:300px;}
+        input,a {
+            margin:10px 0;
+            padding:10px;
+            width:100%;
+            text-align:left; 
+            color: #333;
+            box-sizing: border-box;}
+        button{
+            margin:10px 0;
+            padding:10px;
+            width:100%;
+            text-align:center; 
+            color: #fff;
+            border: none;
+            cursor: pointer;}
+        
+        #login{background-color: #0aef3f;}
+        #signup{background-color: #007bff;}
+        #goto-signup,#goto-login{
+            color: #007bff;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+        }
+        .hidden {
+            display:none;}
+        .timer{
+            font-size: 48px;
+            text-align: center;
+            color: black;
+        }
+        .green-button{
+            background-color: green;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .green-button:hover{
+            background-color: darkgreen;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="login-section">
+            <input type="text" name="username" id="login-username" required placeholder="Enter your username">
+            <input type="password" name="password" id="login-password" required placeholder="Enter your password">
+            <button id="Login" class="green-button">Login</button>
+            <button id="clear" class="green-button">Clear</button>
+            <a href="#" id="goto-signup">Signup</a>
+        </div>
+        <div id="signup-section" class="hidden">
+            <input type="text" id="name" required placeholder="Enter your name">
+            <input type="text" id="signup-username" required placeholder="Enter your username">
+            <input type="email" id="email" required placeholder="Enter your email">
+            <input type="password" id="signup-password" required placeholder="**********">
+            <input type="date" id="dob" required placeholder="Enter your date of birth">
+            <button id="signup">Sign Up</button>
+            <a href="#" id="goto-login">Login</a>
+        </div>
+        <div id="lock-section" class="hidden">
+            <div class="timer" id="timer">5:00</div>
+        </div>
+    </div>
+    <script>
+        let users=JSON.parse(localStorage.getItem('users'))||[]
+        let attempts=parseInt(localStorage.getItem('loginAttempts'))||0;
+        console.log(users)
+
+        document.getElementById('Login').addEventListener('click',(e)=> {
+            e.preventDefault()
+            let username=document.getElementById('login-username').value
+            let password=document.getElementById('login-password').value
+
+            console.log(`Attempting login with username:${username},password:${password}`)
+
+            let userFound=users.find(user=> user.username=== username && user.password=== password)
+            if (userFound) {
+                alert('Login Successful!')
+                localStorage.setItem('username',username)
+                localStorage.setItem('password',password)
+                window.location.href='index.html'
+            } else {
+                attempts++
+                localStorage.setItem('loginAttempts',attempts)
+                if(attempts>=5){
+                    localStorage.setItem('lockTime',Date.now())
+                    showLockSection();
+                }else{
+                    alert('Invalid username or password')
+                }
+                
+            }
+        })
+
+        document.getElementById('clear').addEventListener('click',()=> {
+            localStorage.clear()
+            document.getElementById('login-username').value=''
+            document.getElementById('login-password').value=''
+        })
+
+        document.getElementById('signup').addEventListener('click',(e)=> {
+            e.preventDefault()
+            let name=document.getElementById('name').value
+            let username=document.getElementById('signup-username').value
+            let email=document.getElementById('email').value
+            let password=document.getElementById('signup-password').value
+            let dob=document.getElementById('dob').value
+
+            let user={
+                name:name,
+                username:username,
+                email:email,
+                password:password,
+                dob:dob
+            }
+
+            users.push(user)
+            console.log(users)
+            localStorage.setItem('users',JSON.stringify(users))
+
+            alert('User signed up successfully!')
+            document.getElementById('name').value=''
+            document.getElementById('signup-username').value=''
+            document.getElementById('email').value=''
+            document.getElementById('signup-password').value=''
+            document.getElementById('dob').value=''
+        })
+
+        document.getElementById('goto-signup').addEventListener('click',(e)=> {
+            e.preventDefault()
+            document.getElementById('login-section').classList.add('hidden')
+            document.getElementById('signup-section').classList.remove('hidden')
+        })
+
+        document.getElementById('goto-login').addEventListener('click',(e)=> {
+            e.preventDefault()
+            document.getElementById('signup-section').classList.add('hidden')
+            document.getElementById('login-section').classList.remove('hidden')
+        })
+        function checklock(){
+            let lockTime=localStorage.getItem('lockTime')
+            if(lockTime){
+                let currentTime=Date.now()
+                let elapsed=currentTime-lockTime
+                if (elapsed<3000){
+                    showLockSection(Math.floor((300000-elapsed)/1000))
+                }else{
+                    localStorage.removeItem('lockTime')
+                    localStorage.setItem('loginAttempts',0);
+                }
+            }
+        }
+        function showLockSection(remainingTime=300){
+            document.getElementById('login-section').classList.add('hidden')
+            document.getElementById('signup-section').classList.add('hidden')
+            document.getElementById('lock-section').classList.remove('hidden')
+            startTimer(remainingTime,document.getElementById('timer'))
+        }
+        function logout(){
+            if addEventListener
+        }
+        function startTimer(duration,display){
+            let timer=duration,minutes,seconds
+            let interval=setInterval(function(){
+                minutes=parseInt(timer/60,10)
+                seconds=parseInt(timer%60,10)
+
+                minutes=minutes<10 ? "0"+minutes:minutes
+                seconds=seconds<10 ? "0"+seconds:seconds
+
+                display.textContent=minutes+":"+seconds
+                if (--timer<0){
+                    clearInterval(interval)
+                    localStorage.removeItem('lockTime')
+                    localStorage.setItem('loginAttempts',0)
+                    document.getElementById('lock-section').classList.add('hidden')
+                    document.getElementById('login-section').classList.remove('hidden')
+                }
+            },1000)
+        }
+        checklock()
+    </script>
+</body>
+</html>

@@ -3,6 +3,8 @@ let clearButton=document.getElementById('clearButton')
 let blinkingCursor=document.getElementById('blinking-cursor')
 document.addEventListener('keydown',handleKeyPress);
 
+let timeout
+
 function clearDisplay(){
     display.value=''; 
     updateClearButton();
@@ -63,7 +65,7 @@ function convertToPercentage() {
     if (display.value) { 
         let lastIndex=display.value.length - 1; 
         let numberEndIndex=lastIndex;
-        while (numberEndIndex >= 0 && (display.value[numberEndIndex] >= '0' && display.value[numberEndIndex] <= '9' || display.value[numberEndIndex]=== '.')) { 
+        while (numberEndIndex >=0 && (display.value[numberEndIndex] >='0' && display.value[numberEndIndex] <='9' || display.value[numberEndIndex]=== '.')) { 
             numberEndIndex--; 
         } 
         numberEndIndex++; 
@@ -103,3 +105,14 @@ function handleKeyPress(event) {
         clearDisplay();
     }
 }
+function resetTimer(){
+    clearTimeout(timeout)
+    timeout=setTimeout(() =>{
+        window.location.href="both.html"
+    },10000)
+}
+window.onload=resetTimer
+document.onmousemove=resetTimer
+document.onkeydown=resetTimer
+document.ontouchstart=resetTimer
+document.onclick=resetTimer
